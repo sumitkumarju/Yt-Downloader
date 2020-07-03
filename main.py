@@ -13,6 +13,8 @@ import ffmpeg
 from mainwindow import Ui_mainwindow
 
 
+
+
 class MainWindow(QtWidgets.QMainWindow, Ui_mainwindow):
     def __init__(self, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -33,10 +35,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_mainwindow):
 
     def getinfo(self):
         link=self.urlinput.text()
+        if link == "":
+             QMessageBox.critical(self, "No URL","You didn't enter any URL.",QMessageBox.Ok)
+             return
+
         print(link)
+        self.label.setText("Wait..")
         self.yt = YouTube(link)
         self.yt.register_on_progress_callback(self.on_progress)
         print(self.yt.title)
+        self.label.setText("Details:-")
+
         self.titleinput.setText(self.yt.title)
         self.authorinput.setText(self.yt.author)
         rating=float("{:.2f}".format(self.yt.rating))
